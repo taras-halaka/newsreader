@@ -69,7 +69,9 @@ def main(page: Page):
     #page.appbar=AppBarMain(page)
     # appBarMain=AppBarMain()
     # print("\n \n",appBarMain,"\n")
+    #page.appbar=AppBar3()
     page.appbar=appBar2
+    page.update()
     left_menu_selection(page)
     
 
