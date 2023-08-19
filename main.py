@@ -1,4 +1,5 @@
 from flet import *
+from src.ui import *
 
 
 def main(page: Page):
@@ -31,7 +32,8 @@ def main(page: Page):
                 [
                     navRail,
                     VerticalDivider(width=1),
-                    body       
+                    body,
+                    UI()       
                 ],
                 expand=True,
             )
@@ -93,6 +95,7 @@ def main(page: Page):
         
     page.appbar=appbar1
     left_menu_selection(page)
+    
 
     
 
