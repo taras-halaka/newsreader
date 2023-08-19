@@ -7,7 +7,7 @@ class UI(UserControl):
 
     def build(self):
         return Column(
-             [ElevatedButton("Add1", on_click=Counter.add_click),
+             [ElevatedButton("Add1", on_click=lambda e : print(e.control.text,"some")),
               ElevatedButton("Add2", on_click=Counter.add_click),
               ElevatedButton("Add3", on_click=Counter.add_click)]
         )
