@@ -1,5 +1,6 @@
 from flet import *
 
+
 class UI(UserControl):
     def __init__(self):
         super().__init__()
@@ -39,42 +40,63 @@ staticAppBar=AppBar(
                 ]
 )
 
-def left_menu_selection():
-    selected=staticNavRail.selected_index
-    print(f" navRail.selected_index = {selected}")
-    if selected == 0:
-        body=Column([ Text("Body as News!")], alignment=MainAxisAlignment.START, expand=True)
-        print(f" News")
-    elif selected == 1:
-        body=Column([ Text("check lists!")], alignment=MainAxisAlignment.START, expand=True)
-        print(f" CheckList")
-    elif selected == 2:
-        body=Column([ Text("settings!")], alignment=MainAxisAlignment.START, expand=True) 
-        print(f"Settings")     
+  
+class staticNavRail(UserControl):
+    def __init__(self,on_change_item):
+        super().__init__()
+        self.on_change_item=on_change_item
     
+    def build(self):
+        return NavigationRail(
+                                selected_index=0,
+                                label_type=NavigationRailLabelType.ALL,
+                                # extended=True,
+                                min_width=100,
+                                min_extended_width=400,
+                                group_alignment=-0.9,
+                                destinations=[
+                                    NavigationRailDestination(
+                                        icon=icons.NEWSPAPER, selected_icon=icons.NEWSPAPER, label="News"
+                                    ),
+                                    NavigationRailDestination(
+                                        icon_content=Icon(icons.FACT_CHECK_OUTLINED),
+                                        selected_icon_content=Icon(icons.FACT_CHECK),
+                                        label="CheckLists",
+                                    ),
+                                    NavigationRailDestination(
+                                        icon=icons.SETTINGS_OUTLINED,
+                                        selected_icon_content=Icon(icons.SETTINGS),
+                                        label_content=Text("Settings"),
+                                    ),
+                                ],
+                                #on_change=lambda e: print("Selected destination:", e.control.selected_index),
+                                #on_change=customApp.left_menu_selection
+                                on_change=self.on_change_item
+                            )
 
-staticNavRail=NavigationRail(
-        selected_index=0,
-        label_type=NavigationRailLabelType.ALL,
-        # extended=True,
-        min_width=100,
-        min_extended_width=400,
-        group_alignment=-0.9,
-        destinations=[
-            NavigationRailDestination(
-                icon=icons.NEWSPAPER, selected_icon=icons.NEWSPAPER, label="News"
-            ),
-            NavigationRailDestination(
-                icon_content=Icon(icons.FACT_CHECK_OUTLINED),
-                selected_icon_content=Icon(icons.FACT_CHECK),
-                label="CheckLists",
-            ),
-            NavigationRailDestination(
-                icon=icons.SETTINGS_OUTLINED,
-                selected_icon_content=Icon(icons.SETTINGS),
-                label_content=Text("Settings"),
-            ),
-        ],
-        #on_change=lambda e: print("Selected destination:", e.control.selected_index),
-        on_change=left_menu_selection
-    )
+
+class CustomApp():
+    def __init__(self):
+        super().__init__()
+
+        
+    def left_menu_selection(self,e):
+        print("left_menu_selection  - is called ")
+        selected=e.navRail.selected_index
+        print(f" navRail.selected_index = {selected}")
+        if selected == 0:
+            body=Column([ Text("Body as News!")], alignment=MainAxisAlignment.START, expand=True)
+            print(f" News")
+        elif selected == 1:
+            body=Column([ Text("check lists!")], alignment=MainAxisAlignment.START, expand=True)
+            print(f" CheckList")
+        elif selected == 2:
+            body=Column([ Text("settings!")], alignment=MainAxisAlignment.START, expand=True) 
+            print(f"Settings")
+        self.navRail.update()
+        
+        
+        
+    appBar=staticAppBar
+    navRail=staticNavRail(left_menu_selection)
+    #navRail.on_change=left_menu_selection         

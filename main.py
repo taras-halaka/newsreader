@@ -3,11 +3,12 @@ from src.ui import *
 
 def main(page: Page):
     page.title="some app"
-    page.appbar=staticAppBar
+    customApp=CustomApp()
+    page.appbar=customApp.appBar
     page.add(
         Row(
             [
-                staticNavRail,
+                customApp.navRail,
                 VerticalDivider(width=1),
                 UI()       
             ],
@@ -15,5 +16,5 @@ def main(page: Page):
         )
     )             
     page.update()
-    left_menu_selection()
+    
 app(main, view=AppView.FLET_APP)
