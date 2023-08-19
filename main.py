@@ -6,12 +6,7 @@ def main(page: Page):
     page.title="some app"
 
 
-    def hide_left_navigation(self):
-        # body.controls.append(Text("menu item was hidden"))
-        # body.update()
-        # print("Left navigation collapsed")
-        navRail.visible = not navRail.visible
-        page.update()
+
         
         
     def left_menu_selection(self):
@@ -68,32 +63,13 @@ def main(page: Page):
     )
 
         
-        
-    appbar1=AppBar(
-        leading=FloatingActionButton(icon=icons.MENU_SHARP, on_click=hide_left_navigation),
-        
-        leading_width=40,
-        title=Text("Some app bar"),
-        toolbar_height=40,
-        center_title=False,
-        bgcolor=colors.BLUE_300,
-        actions=[
-            PopupMenuButton(
-                icon=icons.SETTINGS,
-                items=[
-                    PopupMenuItem(text="Help"),
-                    PopupMenuItem(),  # divider
-                    PopupMenuItem(text="Settings"),
-                    PopupMenuItem(text="About"),
-                    PopupMenuItem(text="Hide NavBar", on_click=hide_left_navigation )
-                ]
-            ),
-        ]
-    )
     
     body=Column([ Text("Empty")], alignment=MainAxisAlignment.START, expand=True)
         
-    page.appbar=appbar1
+    #page.appbar=AppBarMain(page)
+    # appBarMain=AppBarMain()
+    # print("\n \n",appBarMain,"\n")
+    page.appbar=appBar2
     left_menu_selection(page)
     
 
