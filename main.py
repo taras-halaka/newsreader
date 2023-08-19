@@ -10,8 +10,34 @@ def main(page: Page):
         # body.update()
         # print("Left navigation collapsed")
         navRail.visible = not navRail.visible
-        navRail.update()
-    
+        page.update()
+        
+        
+    def left_menu_selection(self):
+        page.controls.clear()
+        print(f" navRail.selected_index = {navRail.selected_index}")
+        if navRail.selected_index == 0:
+            body=Column([ Text("Body as News!")], alignment=MainAxisAlignment.START, expand=True)
+            print(f" News")
+        elif navRail.selected_index == 1:
+            body=Column([ Text("check lists!")], alignment=MainAxisAlignment.START, expand=True)
+            print(f" CheckList")
+        elif navRail.selected_index == 2:
+            body=Column([ Text("settings!")], alignment=MainAxisAlignment.START, expand=True) 
+            print(f"Settings")     
+        
+        page.add(
+            Row(
+                [
+                    navRail,
+                    VerticalDivider(width=1),
+                    body       
+                ],
+                expand=True,
+            )
+        )             
+        page.update()
+        print("menu item seelction updated")
     
     navRail=NavigationRail(
         selected_index=0,
@@ -22,12 +48,12 @@ def main(page: Page):
         group_alignment=-0.9,
         destinations=[
             NavigationRailDestination(
-                icon=icons.FAVORITE_BORDER, selected_icon=icons.FAVORITE, label="First"
+                icon=icons.NEWSPAPER, selected_icon=icons.NEWSPAPER, label="News"
             ),
             NavigationRailDestination(
-                icon_content=Icon(icons.BOOKMARK_BORDER),
-                selected_icon_content=Icon(icons.BOOKMARK),
-                label="Second",
+                icon_content=Icon(icons.FACT_CHECK_OUTLINED),
+                selected_icon_content=Icon(icons.FACT_CHECK),
+                label="CheckLists",
             ),
             NavigationRailDestination(
                 icon=icons.SETTINGS_OUTLINED,
@@ -35,7 +61,8 @@ def main(page: Page):
                 label_content=Text("Settings"),
             ),
         ],
-        on_change=lambda e: print("Selected destination:", e.control.selected_index),
+        #on_change=lambda e: print("Selected destination:", e.control.selected_index),
+        on_change=left_menu_selection
     )
 
         
@@ -61,20 +88,12 @@ def main(page: Page):
             ),
         ]
     )
-    body=Column([ Text("Body as component!")], alignment=MainAxisAlignment.START, expand=True)
     
+    body=Column([ Text("Empty")], alignment=MainAxisAlignment.START, expand=True)
+        
     page.appbar=appbar1
-    page.add(
-        Row(
-            [
-                navRail,
-                VerticalDivider(width=3),
-                body
-                
-            ],
-            expand=True,
-        )
-    )
+    left_menu_selection(page)
+
     
 
 app(main, view=AppView.WEB_BROWSER)
