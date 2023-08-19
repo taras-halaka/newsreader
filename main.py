@@ -6,11 +6,9 @@ def main(page: Page):
 
 
     def hide_left_navigation(self):
-        # if navRail.visible:
-        #     message='visible'
-        # else:
-        #     message='hidden'
-        # print(f"hide naviation was changed from {message} to :")
+        # body.controls.append(Text("menu item was hidden"))
+        # body.update()
+        # print("Left navigation collapsed")
         navRail.visible = not navRail.visible
         navRail.update()
     
@@ -21,7 +19,6 @@ def main(page: Page):
         # extended=True,
         min_width=100,
         min_extended_width=400,
-        leading=FloatingActionButton(icon=icons.MENU, text="Navigation", on_click=hide_left_navigation),
         group_alignment=-0.9,
         destinations=[
             NavigationRailDestination(
@@ -44,7 +41,8 @@ def main(page: Page):
         
         
     appbar1=AppBar(
-        leading=Icon(icons.MENU_BOOK),
+        leading=FloatingActionButton(icon=icons.MENU_SHARP, on_click=hide_left_navigation),
+        
         leading_width=40,
         title=Text("Some app bar"),
         toolbar_height=40,
@@ -63,7 +61,7 @@ def main(page: Page):
             ),
         ]
     )
-    
+    body=Column([ Text("Body as component!")], alignment=MainAxisAlignment.START, expand=True)
     
     page.appbar=appbar1
     page.add(
@@ -71,7 +69,8 @@ def main(page: Page):
             [
                 navRail,
                 VerticalDivider(width=3),
-                Column([ Text("Body!")], alignment=MainAxisAlignment.START, expand=True),
+                body
+                
             ],
             expand=True,
         )
