@@ -96,4 +96,5 @@ def main(page: Page):
 
     
 
-app(main, view=AppView.WEB_BROWSER)
+#app(main, view=AppView.WEB_BROWSER)
+app(main, view=AppView.FLET_APP)
