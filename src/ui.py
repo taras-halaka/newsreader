@@ -42,12 +42,9 @@ staticAppBar=AppBar(
 
   
 class staticNavRail(UserControl):
-    def __init__(self,on_change_item):
+    def __init__(self):
         super().__init__()
-        self.on_change_item=on_change_item
-    
-    def build(self):
-        return NavigationRail(
+        self.navRail=NavigationRail(
                                 selected_index=0,
                                 label_type=NavigationRailLabelType.ALL,
                                 # extended=True,
@@ -71,18 +68,12 @@ class staticNavRail(UserControl):
                                 ],
                                 #on_change=lambda e: print("Selected destination:", e.control.selected_index),
                                 #on_change=customApp.left_menu_selection
-                                on_change=self.on_change_item
+                                on_change=self.left_menu_selection
                             )
-
-
-class CustomApp():
-    def __init__(self):
-        super().__init__()
-
-        
-    def left_menu_selection(self,e):
+    
+    def left_menu_selection(self):
         print("left_menu_selection  - is called ")
-        selected=e.navRail.selected_index
+        selected=self.navRail.selected_index
         print(f" navRail.selected_index = {selected}")
         if selected == 0:
             body=Column([ Text("Body as News!")], alignment=MainAxisAlignment.START, expand=True)
@@ -93,10 +84,36 @@ class CustomApp():
         elif selected == 2:
             body=Column([ Text("settings!")], alignment=MainAxisAlignment.START, expand=True) 
             print(f"Settings")
-        self.navRail.update()
+        self.update()
+    
+    def build(self):
+        return 
+
+
+class CustomApp(UserControl):
+    def __init__(self, page:Page):
+        super().__init__()
+        self.page=page
+        self.appBar=staticAppBar
+        self.navRail=staticNavRail()
+
+    def build(self):
+        self.page.add(
+        Row(
+            [
+                self.navRail,
+                VerticalDivider(width=1),
+                UI()       
+            ],
+            expand=True,
+                )
+            )             
+        self.page.update()
+        return self.page
+        
+
         
         
         
-    appBar=staticAppBar
-    navRail=staticNavRail(left_menu_selection)
+
     #navRail.on_change=left_menu_selection         
