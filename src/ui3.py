@@ -1,10 +1,11 @@
 from flet import *
+from datetime import datetime
 
 
 class SimpleNewsReaderUI():
     def __init__(self,mainpage:Page):
         super().__init__()
-        print(f" created = {type(self)}")
+        print(f" created = {datetime.now()} {type(self)}")
         #define properites 
         self.page=mainpage
         self.state_changed=False
@@ -13,7 +14,8 @@ class SimpleNewsReaderUI():
         self.page.appbar=AppBar(
                     leading=FloatingActionButton(
                         icon=icons.MENU_SHARP,
-                        on_click=lambda _: print(f"leading icon clicked")),
+                        on_click=lambda _:self.togle_navbar()
+                        ),
                     leading_width=40,
                     title=Text("Some app bar"),
                     toolbar_height=40,
@@ -89,6 +91,12 @@ class SimpleNewsReaderUI():
                         action="Alright!",
                     )        
         self.page.update()
+        
+        
+    def togle_navbar(self):
+            print(f"    {self}")
+            self.navRail.visible = not self.navRail.visible
+            self.navRail.update() 
 
         
         
