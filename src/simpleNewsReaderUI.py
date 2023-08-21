@@ -1,16 +1,21 @@
 from flet import *
 from datetime import datetime
+#custom content
+from src.news_body import NewsPage
 
 
 class SimpleNewsReaderUI():
     def __init__(self,mainpage:Page):
         super().__init__()
-        print(f" created = {datetime.now()} {type(self)}")
+#for DEBUG print to console
+        self.debug=True
+        if self.debug:         print(f" created = {datetime.now()} {type(self)}")
         #define properites 
         self.page=mainpage
         self.state_changed=False
 
-#define navigation menu content
+
+#define TOP navigation menu content
         self.page.appbar=AppBar(
                     leading=FloatingActionButton(
                         icon=icons.MENU_SHARP,
@@ -33,7 +38,7 @@ class SimpleNewsReaderUI():
                         ]),])
         
         
-#define left navigation menu content
+#define LEFT navigation menu content
         self.navRail=NavigationRail(
                                 selected_index=0,
                                 label_type=NavigationRailLabelType.ALL,
@@ -63,7 +68,7 @@ class SimpleNewsReaderUI():
                                 #on_change=lambda e: print("Selected destination:", e.control.selected_index),
                                 #on_change=customApp.left_menu_selection
                                 #on_change=lambda _:print(f" left menu selected {self.navRail.selected_index}")
-                                on_change=lambda _: self.show_snack_bar(f"{self.navRail.destinations[self.navRail.selected_index].label}","ok!")
+                                on_change=self.change_body_content
                             )
         
         
@@ -129,7 +134,31 @@ class SimpleNewsReaderUI():
              
         
         
+# change body content
+    def change_body_content(self, _args ):
+        if self.debug: print(f"called change_body_content:")
+        news_page_content=NewsPage(self.body)
+        self.body=news_page_content.body
+        #application UI was changed
+        self.state_changed=True
+        self.updateUI()
+        self.show_snack_bar(f"{self.navRail.destinations[self.navRail.selected_index].label}","ok!")
         
 
 
-
+    def updateUI(self):
+        if self.debug:
+            print(f" -> updateUI()")
+        if self.state_changed:
+            self.page.clean()
+            self.page.add(Row(controls=[
+                                self.navRail,
+                                VerticalDivider(width=1),
+                                self.body
+                                ],
+                            alignment=MainAxisAlignment.START,
+                            expand=True   
+                            ))        
+            self.page.update()
+            self.state_changed=False
+                    
