@@ -1,7 +1,11 @@
 from flet import *
 from datetime import datetime
 #custom content
+from src.menuItems import MenuItems
 from src.news_body import NewsPage
+from src.checklist_body import CheckListPage
+from src.settings_body import SettingsPage
+
 
 
 class SimpleNewsReaderUI():
@@ -12,6 +16,7 @@ class SimpleNewsReaderUI():
         if self.debug:         print(f" created = {datetime.now()} {type(self)}")
         #define properites 
         self.page=mainpage
+        self.body=Container(content=Column([TextField(label="...Empty space...")]))
         self.state_changed=False
 
 
@@ -39,54 +44,57 @@ class SimpleNewsReaderUI():
         
         
 #define LEFT navigation menu content
-        self.navRail=NavigationRail(
-                                selected_index=0,
-                                label_type=NavigationRailLabelType.ALL,
-                                #height=1024,
-                                #extended=False,
+        # self.navRail=NavigationRail(
+        #                         selected_index=0,
+        #                         label_type=NavigationRailLabelType.ALL,
+        #                         #height=1024,
+        #                         #extended=False,
 
-                                min_width=100,
-                                min_extended_width=400,
-                                group_alignment=-0.9,
-                                destinations=[
-                                    NavigationRailDestination(
-                                        icon=icons.NEWSPAPER, 
-                                        selected_icon=icons.NEWSPAPER_ROUNDED, 
-                                        label="News"
-                                    ),
-                                    NavigationRailDestination(
-                                        icon_content=Icon(icons.FACT_CHECK_OUTLINED),
-                                        selected_icon_content=Icon(icons.FACT_CHECK),
-                                        label="CheckLists",
-                                    ),
-                                    NavigationRailDestination(
-                                        icon=icons.SETTINGS_OUTLINED,
-                                        selected_icon_content=Icon(icons.SETTINGS),
-                                        label="Settings",
-                                    ),
-                                ],
-                                #on_change=lambda e: print("Selected destination:", e.control.selected_index),
-                                #on_change=customApp.left_menu_selection
-                                #on_change=lambda _:print(f" left menu selected {self.navRail.selected_index}")
-                                on_change=self.change_body_content
-                            )
+        #                         min_width=100,
+        #                         min_extended_width=400,
+        #                         group_alignment=-0.9,
+        #                         destinations=[
+        #                             NavigationRailDestination(
+        #                                 icon=icons.NEWSPAPER, 
+        #                                 selected_icon=icons.NEWSPAPER_ROUNDED, 
+        #                                 label="News"
+        #                             ),
+        #                             NavigationRailDestination(
+        #                                 icon_content=Icon(icons.FACT_CHECK_OUTLINED),
+        #                                 selected_icon_content=Icon(icons.FACT_CHECK),
+        #                                 label="CheckLists",
+        #                             ),
+        #                             NavigationRailDestination(
+        #                                 icon=icons.SETTINGS_OUTLINED,
+        #                                 selected_icon_content=Icon(icons.SETTINGS),
+        #                                 label="Settings",
+        #                             ),
+        #                         ],
+        #                         #on_change=lambda e: print("Selected destination:", e.control.selected_index),
+        #                         #on_change=customApp.left_menu_selection
+        #                         #on_change=lambda _:print(f" left menu selected {self.navRail.selected_index}")
+        #                         on_change=self.change_body_content
+        #                     )
         
-        
+        #get menu content from extra module
+        self.menuItems=MenuItems(self.body)
+        self.navRail=self.menuItems.navigationRail
+        self.navRail.on_change=self.change_body_content
 #define page content
-        self.body=Container(content=Column([TextField(label="Your name"),
-                        ElevatedButton("Login",on_click=lambda _: print(f" created = {type(self)}")),],
-                        ),
-                        margin=10,
-                        padding=10,
-                        alignment=alignment.top_left,
-                        bgcolor=colors.AMBER,
-                        border_radius=10,
-                        expand=True,
-                        height=200,
-                        width=300,
-                        tooltip="some tooltip"
-                         )
- 
+        # self.body=Container(content=Column([TextField(label="Your name"),
+        #                 ElevatedButton("Login",on_click=lambda _: print(f" created = {type(self)}")),],
+        #                 ),
+        #                 margin=10,
+        #                 padding=10,
+        #                 alignment=alignment.top_left,
+        #                 bgcolor=colors.AMBER,
+        #                 border_radius=10,
+        #                 expand=True,
+        #                 height=200,
+        #                 width=300,
+        #                 tooltip="some tooltip"
+        #                  )
+    
  
  
 #add conetnet to page
@@ -136,8 +144,19 @@ class SimpleNewsReaderUI():
         
 # change body content
     def change_body_content(self, _args ):
-        if self.debug: print(f"called change_body_content:")
-        news_page_content=NewsPage(self.body)
+        selected_menu_item=self.navRail.destinations[self.navRail.selected_index].label
+        if self.debug: print(f"  >>{selected_menu_item} >>called change_body_content:")
+        #news_page_content=NewsPage(self.body)
+        #CheckListPage(self.body)
+        if selected_menu_item == self.menuItems.items[0]["label"]:
+            news_page_content= self.menuItems.items[0]["content"] #SettingsPage(self.body) 
+        if selected_menu_item == self.menuItems.items[1]["label"]:
+            news_page_content= self.menuItems.items[1]["content"] #SettingsPage(self.body) 
+        if selected_menu_item == self.menuItems.items[2]["label"]:
+            news_page_content= self.menuItems.items[2]["content"] #SettingsPage(self.body) 
+        if selected_menu_item == self.menuItems.items[3]["label"]:
+            news_page_content= self.menuItems.items[3]["content"] #SettingsPage(self.body) 
+
         self.body=news_page_content.body
         #application UI was changed
         self.state_changed=True
