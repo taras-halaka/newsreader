@@ -6,14 +6,17 @@ class CustomApp():
         self.page=page
         self.page.title="some sort of App"
 
-        self.page.appbar=mAppBar().appBar
+        self.appbar=mAppBar().appBar
+        self.page.appbar=self.appbar
+        
         self.navRail=mNavRail()
         self.mBody=mBody()
         
         self.page.add(Row(controls=[self.navRail,
                             VerticalDivider(width=1),
                             self.mBody
-                            ]
+                            ],
+                          alignment=MainAxisAlignment.START,   
                           ))
         self.page.snack_bar=SnackBar(
                         content=Text("Hello, world!"),
@@ -72,10 +75,17 @@ class mBody(UserControl):
         super().__init__()
     
     def build(self):
-        return Column([ TextField(label="Your name"),
+        return Container(content=Column([ TextField(label="Your name"),
                         ElevatedButton("Login",on_click=CustomApp.simpleAlert),],
-                        alignment=MainAxisAlignment.START,
-                      )
+                        ),
+                        margin=10,
+                        padding=10,
+                        alignment=alignment.top_left,
+                        bgcolor=colors.AMBER,
+                        width=150,
+                        height=250,
+                        border_radius=10,
+                         )
 
 #
 #  Left Navigation Menu Definition

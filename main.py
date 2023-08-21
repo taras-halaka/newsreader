@@ -1,9 +1,9 @@
 from flet import *
-from src.ui2 import *
+from src.ui3 import *
 
 def main(page: Page):
     
-    CustomApp(page)
+    SimpleNewsReaderUI(page)
     
     
 app(main, view=AppView.FLET_APP)
