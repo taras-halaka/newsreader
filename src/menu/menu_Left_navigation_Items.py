@@ -1,7 +1,7 @@
 from flet import icons,NavigationRail,NavigationRailDestination,NavigationRailLabelType
-from src.news_body import NewsPage
-from src.checklist_body import CheckListPage
-from src.settings_body import SettingsPage
+from src.pages.page_body_news_ import NewsPage
+from src.pages.page_body_checklist_ import CheckListPage
+from src.pages.page_body_settings_ import SettingsPage
 
 class MenuItems():
     def __init__(self,body):
@@ -28,9 +28,22 @@ class MenuItems():
             "selected_icon":icons.SETTINGS,
             "content":SettingsPage(self.body) 
         }
+        #temporary added for test
+        self.setings33 = {
+            "label":"Settings33",
+            "icon":icons.SETTINGS_OUTLINED, 
+            "selected_icon":icons.SETTINGS,
+            "content":SettingsPage(self.body) 
+        }
         #array of menu items in sequence
-        self.items = [self.setings,self.checklist,self.news,self.news,]
-        #define main props
+        self.items = [
+                        self.setings,
+                        self.checklist,
+                        self.news,
+                        self.news,
+                        self.setings33,
+                        self.setings33]
+        #define main properties of NavigationRail
         self.navigationRail=NavigationRail(
                                 selected_index=0,
                                 label_type=NavigationRailLabelType.ALL,
@@ -40,7 +53,7 @@ class MenuItems():
                                 destinations=[
                                 ],
                             )
-        # add menu items from array of dict
+        # generate menu items from predefined abouve array of items
         for item in self.items:
             self.navigationRail.destinations.append(
                                     NavigationRailDestination(
