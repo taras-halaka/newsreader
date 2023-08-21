@@ -14,7 +14,7 @@ class SimpleNewsReaderUI():
         self.page.appbar=AppBar(
                     leading=FloatingActionButton(
                         icon=icons.MENU_SHARP,
-                        on_click=lambda _:self.togle_navbar()
+                        on_click=self.togle_navbar
                         ),
                     leading_width=40,
                     title=Text("Some app bar"),
@@ -29,7 +29,7 @@ class SimpleNewsReaderUI():
                             PopupMenuItem(),  # divider
                             PopupMenuItem(text="Settings"),
                             PopupMenuItem(text="About"),
-                            PopupMenuItem(text="Hide NavBar")
+                            PopupMenuItem(text="Hide NavBar",on_click=self.togle_navbar)
                         ]),])
          #define left navigation menu content
         self.navRail=NavigationRail(
@@ -43,7 +43,9 @@ class SimpleNewsReaderUI():
                                 group_alignment=-0.9,
                                 destinations=[
                                     NavigationRailDestination(
-                                        icon=icons.NEWSPAPER, selected_icon=icons.NEWSPAPER, label="News"
+                                        icon=icons.NEWSPAPER, 
+                                        selected_icon=icons.NEWSPAPER_ROUNDED, 
+                                        label="News"
                                     ),
                                     NavigationRailDestination(
                                         icon_content=Icon(icons.FACT_CHECK_OUTLINED),
@@ -53,12 +55,13 @@ class SimpleNewsReaderUI():
                                     NavigationRailDestination(
                                         icon=icons.SETTINGS_OUTLINED,
                                         selected_icon_content=Icon(icons.SETTINGS),
-                                        label_content=Text("Settings"),
+                                        label="Settings",
                                     ),
                                 ],
                                 #on_change=lambda e: print("Selected destination:", e.control.selected_index),
                                 #on_change=customApp.left_menu_selection
-                                #on_change=self.left_menu_selection
+                                #on_change=lambda _:print(f" left menu selected {self.navRail.selected_index}")
+                                on_change=lambda _: self.show_snack_bar(f"{self.navRail.destinations[self.navRail.selected_index].label}","ok!")
                             )
         #define page content
         self.body=Container(content=Column([TextField(label="Your name"),
@@ -72,7 +75,7 @@ class SimpleNewsReaderUI():
                         expand=True,
                         height=200,
                         width=300,
-                        tooltip=Text("some tooltip")
+                        tooltip="some tooltip"
                          )
  
  
@@ -93,11 +96,24 @@ class SimpleNewsReaderUI():
         self.page.update()
         
         
-    def togle_navbar(self):
-            print(f"    {self}")
+    def togle_navbar(self,_args):
             self.navRail.visible = not self.navRail.visible
+            if self.navRail.visible:
+                 self.show_snack_bar("INFO: Left Menu Opened ","ok!")
+            else:
+                 self.show_snack_bar("INFO: Left Menu Closed ","ok!")
             self.navRail.update() 
-
+            
+            
+            
+    def show_snack_bar(self,msg=None,action=None):
+        if msg:
+            self.page.snack_bar.content= Text(f"{msg}")
+        if action:
+            self.page.snack_bar.action= action
+        self.page.snack_bar.open = True
+        self.page.snack_bar.update()
+             
         
         
         
