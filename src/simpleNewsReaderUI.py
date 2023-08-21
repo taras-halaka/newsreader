@@ -10,7 +10,7 @@ class SimpleNewsReaderUI():
         self.page=mainpage
         self.state_changed=False
 
-        #define navigation menu content
+#define navigation menu content
         self.page.appbar=AppBar(
                     leading=FloatingActionButton(
                         icon=icons.MENU_SHARP,
@@ -31,7 +31,9 @@ class SimpleNewsReaderUI():
                             PopupMenuItem(text="About"),
                             PopupMenuItem(text="Hide NavBar",on_click=self.togle_navbar)
                         ]),])
-         #define left navigation menu content
+        
+        
+#define left navigation menu content
         self.navRail=NavigationRail(
                                 selected_index=0,
                                 label_type=NavigationRailLabelType.ALL,
@@ -63,7 +65,9 @@ class SimpleNewsReaderUI():
                                 #on_change=lambda _:print(f" left menu selected {self.navRail.selected_index}")
                                 on_change=lambda _: self.show_snack_bar(f"{self.navRail.destinations[self.navRail.selected_index].label}","ok!")
                             )
-        #define page content
+        
+        
+#define page content
         self.body=Container(content=Column([TextField(label="Your name"),
                         ElevatedButton("Login",on_click=lambda _: print(f" created = {type(self)}")),],
                         ),
@@ -80,7 +84,8 @@ class SimpleNewsReaderUI():
  
  
  
-        #conetnet to page
+#add conetnet to page
+
         self.page.add(Row(controls=[
                             self.navRail,
                             VerticalDivider(width=1),
@@ -95,7 +100,14 @@ class SimpleNewsReaderUI():
                     )        
         self.page.update()
         
-        
+
+
+
+#function definitions:
+
+
+# navigation bar toggle
+
     def togle_navbar(self,_args):
             self.navRail.visible = not self.navRail.visible
             if self.navRail.visible:
@@ -105,6 +117,7 @@ class SimpleNewsReaderUI():
             self.navRail.update() 
             
             
+# show notification in snackbar
             
     def show_snack_bar(self,msg=None,action=None):
         if msg:

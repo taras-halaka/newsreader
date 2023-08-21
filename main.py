@@ -1,5 +1,5 @@
 from flet import *
-from src.ui3 import *
+from src.simpleNewsReaderUI import SimpleNewsReaderUI
 
 def main(page: Page):
     
