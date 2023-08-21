@@ -7,15 +7,43 @@ class CustomApp():
         self.page.title="some sort of App"
 
         self.page.appbar=mAppBar().appBar
-        mNavRail(self.page)
+        self.navRail=mNavRail()
+        self.mBody=mBody()
+        
+        self.page.add(Row(controls=[self.navRail,
+                            VerticalDivider(width=1),
+                            self.mBody
+                            ]
+                          ))
+        self.page.snack_bar=SnackBar(
+                        content=Text("Hello, world!"),
+                        action="Alright!",
+                    )
         # self.page.add(Row(mNavRail(self.page)))        
         self.page.update()
 
+    def simpleAlert(self, text=None):
+        if text:
+            print(f"got message = {text}")
+            self.page.snack_bar.conent(Text(text))
+        else:
+            print(f" no text was defined")
+        self.page.snack_bar.open = True
+        self.page.update()
+    
+    def defineActions(self):
+        self.appBar.leading.on_click=self.simpleAlert
+
+
+
+#
+# Top Navigation Bar definition
+#
 class mAppBar():
     def __init__(self):
         super().__init__()
         self.appBar=AppBar(
-                    leading=FloatingActionButton(icon=icons.MENU_SHARP, on_click=lambda e: print("page.controls")),
+                    leading=FloatingActionButton(icon=icons.MENU_SHARP, on_click=CustomApp.simpleAlert),
                     leading_width=40,
                     title=Text("Some app bar"),
                     toolbar_height=40,
@@ -29,19 +57,35 @@ class mAppBar():
                             PopupMenuItem(),  # divider
                             PopupMenuItem(text="Settings"),
                             PopupMenuItem(text="About"),
-                            PopupMenuItem(text="Hide NavBar",on_click=lambda e: print("hide"))
+                            PopupMenuItem(text="Hide NavBar",on_click=CustomApp.simpleAlert)
                         ]
                     ),
                 ]
 )
-
-
-
-class mNavRail():
-    def __init__(self,source_page):
+        
+        
+#
+#  content of app frame body definition
+#        
+class mBody(UserControl):
+    def __init__(self):
         super().__init__()
-        self.page=source_page
-        self.navRail=NavigationRail(
+    
+    def build(self):
+        return Column([ TextField(label="Your name"),
+                        ElevatedButton("Login",on_click=CustomApp.simpleAlert),],
+                        alignment=MainAxisAlignment.START,
+                      )
+
+#
+#  Left Navigation Menu Definition
+#
+class mNavRail(UserControl):
+    def __init__(self):
+        super().__init__()
+    
+    def build(self):
+        return NavigationRail(
                                 selected_index=0,
                                 label_type=NavigationRailLabelType.ALL,
                                 height=1024,
@@ -69,17 +113,10 @@ class mNavRail():
                                 #on_change=customApp.left_menu_selection
                                 on_change=self.left_menu_selection
                             )
-        self.page.add(Row(controls=[self.navRail,
-                            VerticalDivider(width=1),
-                            Column([
-                                    TextField(label="Your name"),
-                                    ElevatedButton("Login"),
-                                        ],
-                                   )
-                            ]
-                          ))
+
     
     def left_menu_selection(self):
+        CustomApp.simpleAlert
         print("left_menu_selection  - is called ")
         selected=self.navRail.selected_index
         print(f" navRail.selected_index = {selected}")
