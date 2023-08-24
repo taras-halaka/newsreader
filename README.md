@@ -17,6 +17,7 @@ flet run -d main.py -w -p 8080
 uploaded source code to github, and created codespace to run (like replit)
 
 - code space
+    -- https://github.com/codespaces
     -- https://special-bassoon-v9q996p9qvxf4vj.github.dev/
 - url when start debugin
     -- https://special-bassoon-v9q996p9qvxf4vj-53763.app.github.dev/
